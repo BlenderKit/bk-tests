@@ -23,14 +23,12 @@ def step_impl(context, location):
     URL = context.driver.current_url
     assert location in URL
 
+@step('they are on Homepage')
+def step_impl(context):
+    URL = context.driver.current_url
+    assert URL.endswith("blenderkit.com/")
+
 @step('wait')
 def step_impl(context):
     while True:
         pass
-
-"""    elem.clear()
-    elem.send_keys("pycon")
-    elem.send_keys(Keys.RETURN)
-    assert "No results found." not in context.driver.page_source
-    context.driver.close()
-"""

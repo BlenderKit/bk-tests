@@ -1,28 +1,36 @@
 from behave import *
 
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from chromedriver_py import binary_path
+elements = {
+    'LOG IN button': '/html/body/nav/div/div/div/div[2]/div/ul[1]/li/a',
+    'USERNAME input': '//*[@id="id_username"]',
+    'PASSWORD input': '//*[@id="id_password"]'
+}
 
 @given('user has Chrome running')
 def step_impl(context):
-    context.driver = webdriver.Chrome(executable_path=binary_path)
+    assert None != context.driver
 
 @when('user opens BlenderKit')
 def step_impl(context):
-    context.driver.get("https://devel.blenderkit.com")
+    assert None == context.driver.get("https://devel.blenderkit.com")
 
-@then('page will include "{text}"')
+@then('page will include text "{text}"')
 def step_impl(context, text):
     assert text in context.driver.page_source
 
+@step('they are on "{location}"')
+def step_impl(context, location):
+    URL = context.driver.current_url
+    assert location in URL
 
-@then('pagedd will include "{text}"')
+@step('wait')
 def step_impl(context):
-    
-    elem = context.driver.find_element_by_name("q")
-    elem.clear()
+    while True:
+        pass
+
+"""    elem.clear()
     elem.send_keys("pycon")
     elem.send_keys(Keys.RETURN)
     assert "No results found." not in context.driver.page_source
     context.driver.close()
+"""

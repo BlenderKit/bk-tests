@@ -14,3 +14,6 @@ def before_all(context):
 
 def before_feature(context, feature):
   context.driver = webdriver.Chrome(executable_path=binary_path)
+  
+def after_feature(context, feature):
+  context.driver.close()

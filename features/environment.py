@@ -3,7 +3,7 @@ from behave import fixture
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from chromedriver_py import binary_path
+from webdriver_manager.chrome import ChromeDriverManager
 
 def before_all(context):
   context.variables = {}
@@ -13,7 +13,7 @@ def before_all(context):
   assert None != context.variables["PASSWORD"], "please set BK_PASSWORD env variable"
 
 def before_feature(context, feature):
-  context.driver = webdriver.Chrome(executable_path=binary_path)
-  
+  context.driver = webdriver.Chrome(ChromeDriverManager().install())
+
 def after_feature(context, feature):
   context.driver.close()

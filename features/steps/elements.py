@@ -18,7 +18,7 @@ def waitForElementToLoad(context, element):
     return elem
 
 def waitForElementToBeClickable(context, element):
-    elem = WebDriverWait(context.driver, 30, poll_frequency=5).until(
+    elem = WebDriverWait(context.driver, 10, poll_frequency=5).until(
         EC.element_to_be_clickable((By.XPATH, element)),
         'Timed out waiting for element to be clickable.')
     return elem

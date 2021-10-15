@@ -1,9 +1,12 @@
-from os import environ
+import os
+from pathlib import Path
+import shutil
 
-from selenium.webdriver.chrome import options
 from behave import fixture
+from behave.model_core import Status
 
 from selenium import webdriver
+from selenium.webdriver.chrome import options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 
@@ -11,26 +14,39 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def before_all(context):
   context.variables = {}
-  context.variables["USERNAME"] = environ.get('BK_USERNAME')
-  context.variables["PASSWORD"] = environ.get('BK_PASSWORD')
+  context.variables["USERNAME"] = os.environ.get('BK_USERNAME')
+  context.variables["PASSWORD"] = os.environ.get('BK_PASSWORD')
   assert None != context.variables["USERNAME"], "please set BK_USERNAME env variable"
   assert None != context.variables["PASSWORD"], "please set BK_PASSWORD env variable"
+  if os.path.isdir("screenshots"):
+    shutil.rmtree("screenshots")
 
 def before_feature(context, feature):
   options = set_chrome_options()
   context.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+  context.featureDirectory = "screenshots/{feature}".format(feature=feature.filename)
+  Path(context.featureDirectory).mkdir(parents=True, exist_ok=True)
 
 def after_feature(context, feature):
   context.driver.close()
 
+def after_step(context, step):
+  context.driver.save_screenshot("{fd}/{line}-{status}-{name}.png".format(
+    fd=context.featureDirectory,
+    line=step.line,
+    status=step.status,
+    name=step.name))
+
+
 def set_chrome_options() -> None:
   chrome_options = Options()
 
-  if environ.get('BK_IS_DOCKER', False):
+  if os.environ.get('BK_IS_DOCKER', False):
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--user-agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36'")
     chrome_prefs = {}
     chrome_options.experimental_options["prefs"] = chrome_prefs
     chrome_prefs["profile.default_content_settings"] = {"images": 2}

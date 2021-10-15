@@ -1,3 +1,6 @@
 __pycache__
 venv
 env.sh
+screenshots
+screenshots-container
+docker-secrets.list

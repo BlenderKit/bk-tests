@@ -1,7 +1,6 @@
 from behave import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import re
 
 elements = {
     'LOG IN button': '/html/body/nav/div/div/div/div[2]/div/ul[1]/li/a',

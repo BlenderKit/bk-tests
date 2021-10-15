@@ -1,4 +1,7 @@
 from behave import *
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import re
 
 elements = {
     'LOG IN button': '/html/body/nav/div/div/div/div[2]/div/ul[1]/li/a',
@@ -18,15 +21,19 @@ def step_impl(context):
 def step_impl(context, text):
     assert text in context.driver.page_source
 
+def waitForPageToLoad(context, location):
+    regex = r'http(?:s|)://.*blenderkit.com' + location
+    WebDriverWait(context.driver, 30, poll_frequency=5).until(
+        EC.url_matches(regex),
+        'Timed out waiting for page to load. URL does not match: {expected}, current URL {current}'.format(expected=regex,current=context.driver.current_url))
+
 @step('they are on "{location}"')
 def step_impl(context, location):
-    URL = context.driver.current_url
-    assert location in URL
-
+    waitForPageToLoad(context, location)
+    
 @step('they are on Homepage')
 def step_impl(context):
-    URL = context.driver.current_url
-    assert URL.endswith("blenderkit.com/")
+    waitForPageToLoad(context, "/")
 
 @step('wait')
 def step_impl(context):

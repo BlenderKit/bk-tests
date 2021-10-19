@@ -3,4 +3,4 @@ venv
 env.sh
 screenshots
 screenshots-container
-docker-secrets.list
+container-secrets.list

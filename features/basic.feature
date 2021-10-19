@@ -19,5 +19,14 @@ Feature: Login via email and password
        Then they are on Homepage
         And page contains element "PROFILE dropdown"
 
+  Scenario: User goes to subscription page
+      Given page contains element "SUBSCRIBE button"
+       When user clicks on element "SUBSCRIBE button"
+       Then they are on "/plans/pricing/"
+        And page contains element "YEARLY switch"
+        And page contains element "GET PLAN button"
 
-
+  Scenario: User buys YEARLY FULL plan
+       When user clicks on element "YEARLY switch"
+        And user clicks on element "GET PLAN button"
+       Then they are on "/plans/order/extend/new/6/"

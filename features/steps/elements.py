@@ -4,11 +4,19 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 elements = {
+    # TOP HEADER
+    'SUBSCRIBE button': '/html/body/nav/div/div/div/div[1]/ul/li[2]/a',
     'LOG IN button': '/html/body/nav/div/div/div/div[2]/div/ul[1]/li/a',
+    'PROFILE dropdown': '//*[@id="profile-dropdown"]',
+
+    # LOGIN PAGE /accounts/login/
     'USERNAME input': '//*[@id="id_username"]',
     'PASSWORD input': '//*[@id="id_password"]',
     'LOG IN submit': '/html/body/div[2]/div/div[2]/form/input[3]',
-    'PROFILE dropdown': '//*[@id="profile-dropdown"]',
+
+    # SUBSCRIPTION PAGE
+    'YEARLY switch': '/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[3]/div[4]',
+    'GET PLAN button': '/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[5]/h4/a',
 }
 
 def waitForElementToLoad(context, element):

@@ -14,10 +14,12 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def before_all(context):
   context.variables = {}
-  context.variables["USERNAME"] = os.environ.get('BK_USERNAME')
-  context.variables["PASSWORD"] = os.environ.get('BK_PASSWORD')
-  assert None != context.variables["USERNAME"], "please set BK_USERNAME env variable"
-  assert None != context.variables["PASSWORD"], "please set BK_PASSWORD env variable"
+  context.variables["BK_USERNAME"] = os.environ.get('BK_USERNAME')
+  context.variables["BK_PASSWORD"] = os.environ.get('BK_PASSWORD')
+  context.variables["PP_USERNAME"] = os.environ.get('PP_USERNAME')
+  context.variables["PP_PASSWORD"] = os.environ.get('PP_PASSWORD')
+  assert None != context.variables["BK_USERNAME"], "please set BK_USERNAME env variable"
+  assert None != context.variables["BK_PASSWORD"], "please set BK_PASSWORD env variable"
   if os.path.isdir("screenshots"):
     shutil.rmtree("screenshots")
 

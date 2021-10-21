@@ -2,22 +2,21 @@ from behave import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-elements = {
-    'LOG IN button': '/html/body/nav/div/div/div/div[2]/div/ul[1]/li/a',
-    'USERNAME input': '//*[@id="id_username"]',
-    'PASSWORD input': '//*[@id="id_password"]'
-}
-
-@given('user has Chrome running')
+@step('user has Chrome running')
 def step_impl(context):
     assert None != context.driver
 
-@when('user opens BlenderKit')
+@step('user opens BlenderKit')
 def step_impl(context):
     assert None == context.driver.get("https://devel.blenderkit.com")
 
-@then('page will include text "{text}"')
+@step('page includes text "{text}"')
 def step_impl(context, text):
+    print(context.driver.page_source)
+    print(context.driver.current_url)
+    print("text:",text)
+    if text in context.driver.page_source:
+        print("text is present")
     assert text in context.driver.page_source
 
 def waitForPageToLoad(context, location):

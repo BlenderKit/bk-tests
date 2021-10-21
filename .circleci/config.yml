@@ -1,0 +1,33 @@
+version: 2.1
+jobs:
+  selenium-test:
+    steps:
+      - checkout
+      - run:
+          name: Build container
+          command: docker build --tag bk-tests
+      - run:
+          name: Run the tests
+          command: docker run -t --env-file container-secrets.list --name bk-tests bk-tests
+      - run:
+          name: Copy results
+          command: docker cp bk-tests:screenshots/. screenshots-container
+      - store_artifacts:
+          path: screenshots-container
+          destination: screenshots
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - selenium-test
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - selenium-test

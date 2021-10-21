@@ -1,19 +1,15 @@
 version: 2.1
 jobs:
   selenium-test:
+    docker:
+      - image: agajdosi/bk-tests:latest
     steps:
       - checkout
       - run:
-          name: Build container
-          command: docker build --tag bk-tests
-      - run:
           name: Run the tests
-          command: docker run -t --env-file container-secrets.list --name bk-tests bk-tests
-      - run:
-          name: Copy results
-          command: docker cp bk-tests:screenshots/. screenshots-container
+          command: BK_IS_DOCKER=True behave
       - store_artifacts:
-          path: screenshots-container
+          path: screenshots
           destination: screenshots
 
 workflows:

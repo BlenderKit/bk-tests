@@ -1,7 +1,6 @@
 FROM python:3.9
 
 # Prepare tests
-ADD features features
 ADD requirements.txt requirements.txt
 RUN pip install --upgrade pip && pip install -r requirements.txt
 

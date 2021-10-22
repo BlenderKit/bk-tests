@@ -24,6 +24,6 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
     jobs:
       - selenium-test

@@ -8,9 +8,16 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 elements = {
     # TOP HEADER
-    'SUBSCRIBE button': '/html/body/nav/div/div/div/div[1]/ul/li[2]/a',
+    'nav item MODELS': '/html/body/nav/div/div/div/div[1]/div/ul/li[1]/a',
+    'nav item MATERIALS': '/html/body/nav/div/div/div/div[1]/div/ul/li[2]/a', 
+    'nav item ADD-ONS': '/html/body/nav/div/div/div/div[1]/div/ul/li[3]/a',
+    'nav item AUTHORS': '/html/body/nav/div/div/div/div[1]/div/ul/li[4]/a',
+    'nav item SUBSCRIBE': '/html/body/nav/div/div/div/div[1]/ul/li[2]/a',
     'LOG IN button': '/html/body/nav/div/div/div/div[2]/div/ul[1]/li/a',
     'PROFILE dropdown': '//*[@id="profile-dropdown"]',
+
+    # ASSET-GALLERY
+    'SEARCH field': '//*[@id="mySearch"]',
 
     # LOGIN PAGE /accounts/login/
     'USERNAME input': '//*[@id="id_username"]',
@@ -75,3 +82,16 @@ def step_impl(context, text, alias):
     elem = waitForElementToLoad(context, element)
     waitForElementToBeClickable(context, element)
     elem.send_keys(text)
+
+@step('user is logged in')
+def step_impl(context):
+    context.execute_steps(u"""
+        Given user navigates to "/accounts/login/"
+          And page contains element "USERNAME input"
+          And page contains element "PASSWORD input"
+         When user types <BK_USERNAME> into element "USERNAME input"
+          And user types <BK_PASSWORD> into element "PASSWORD input"
+          And user clicks on element "LOG IN submit"
+         Then they are on Homepage
+          And page contains element "PROFILE dropdown"
+    """)

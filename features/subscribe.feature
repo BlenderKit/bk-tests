@@ -1,3 +1,4 @@
+@subscribe
 Feature: User buys a full plan subscription
 
   Scenario: User opens BlenderKit homepage
@@ -20,8 +21,8 @@ Feature: User buys a full plan subscription
         And page contains element "PROFILE dropdown"
 
   Scenario: User goes to subscription page
-      Given page contains element "SUBSCRIBE button"
-       When user clicks on element "SUBSCRIBE button"
+      Given page contains element "nav item SUBSCRIBE"
+       When user clicks on element "nav item SUBSCRIBE"
        Then they are on "/plans/pricing/"
         And page contains element "YEARLY switch"
         And page contains element "GET PLAN button"

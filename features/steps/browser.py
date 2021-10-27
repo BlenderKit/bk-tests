@@ -1,3 +1,4 @@
+import re
 from behave import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -6,9 +7,16 @@ from selenium.webdriver.support import expected_conditions as EC
 def step_impl(context):
     assert None != context.driver
 
+#TODO: parametrize the base URL of tested server
 @step('user opens BlenderKit')
 def step_impl(context):
     assert None == context.driver.get("https://devel.blenderkit.com")
+
+#TODO: parametrize the base URL of tested server
+@step('user navigates to "{location}"')
+def step_impl(context, location):
+    url = "https://devel.blenderkit.com" + location
+    assert None == context.driver.get(url)
 
 @step('page includes text "{text}"')
 def step_impl(context, text):
@@ -20,7 +28,7 @@ def step_impl(context, text):
     assert text in context.driver.page_source
 
 def waitForPageToLoad(context, location):
-    regex = r'http(?:s|)://.*blenderkit.com' + location
+    regex = r'http(?:s|)://.*blenderkit.com' + re.escape(location)
     WebDriverWait(context.driver, 30, poll_frequency=5).until(
         EC.url_matches(regex),
         'Timed out waiting for page to load. URL does not match: {expected}, current URL {current}'.format(expected=regex,current=context.driver.current_url))

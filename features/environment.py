@@ -14,12 +14,25 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def before_all(context):
   context.variables = {}
-  context.variables["BK_USERNAME"] = os.environ.get('BK_USERNAME')
-  context.variables["BK_PASSWORD"] = os.environ.get('BK_PASSWORD')
-  context.variables["PP_USERNAME"] = os.environ.get('PP_USERNAME')
-  context.variables["PP_PASSWORD"] = os.environ.get('PP_PASSWORD')
+  context.variables["BK_USERNAME"] = os.environ.get("BK_USERNAME")
+  context.variables["BK_PASSWORD"] = os.environ.get("BK_PASSWORD")
+  context.variables["PP_USERNAME"] = os.environ.get("PP_USERNAME")
+  context.variables["PP_PASSWORD"] = os.environ.get("PP_PASSWORD")
   assert None != context.variables["BK_USERNAME"], "please set BK_USERNAME env variable"
   assert None != context.variables["BK_PASSWORD"], "please set BK_PASSWORD env variable"
+  
+  context.variables["BK_TARGET"] = os.environ.get("BK_TARGET")
+  if context.variables["BK_TARGET"] in [None, "devel", "dev"]:
+    context.variables["BK_TARGET"] = "https://devel.blenderkit.com"
+  elif context.variables["BK_TARGET"] in ["staging", "stage"]:
+    context.variables["BK_TARGET"] = "https://staging.blenderkit.com"
+  elif context.variables["BK_TARGET"] in ["production", "prod"]:
+    context.variables["BK_TARGET"] = "https://blenderkit.com"
+
+  print("INFO: running the tests on server {}".format(context.variables["BK_TARGET"]))
+  print("For different target set env variable BK_TARGET to full URL or use shortcuts: devel, stage, production.")
+  print("When left empty the target is devel by default.")
+
   if os.path.isdir("screenshots"):
     shutil.rmtree("screenshots")
 
@@ -38,7 +51,6 @@ def after_step(context, step):
     line=step.line,
     status=step.status,
     name=step.name))
-
 
 def set_chrome_options() -> None:
   chrome_options = Options()

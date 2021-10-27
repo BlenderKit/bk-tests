@@ -10,12 +10,12 @@ def step_impl(context):
 #TODO: parametrize the base URL of tested server
 @step('user opens BlenderKit')
 def step_impl(context):
-    assert None == context.driver.get("https://devel.blenderkit.com")
+    assert None == context.driver.get(context.variables["BK_TARGET"])
 
 #TODO: parametrize the base URL of tested server
 @step('user navigates to "{location}"')
 def step_impl(context, location):
-    url = "https://devel.blenderkit.com" + location
+    url = context.variables["BK_TARGET"] + location
     assert None == context.driver.get(url)
 
 @step('page includes text "{text}"')

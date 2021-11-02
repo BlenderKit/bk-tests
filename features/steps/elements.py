@@ -1,4 +1,5 @@
 import time
+from decimal import *
 
 from behave import *
 from selenium.webdriver.support.ui import WebDriverWait, Select
@@ -32,9 +33,13 @@ elements = {
     '30DAY GLIMPSE button': '/html/body/div[2]/div/div[2]/form/div/div[1]/div/div/div/div[2]/label/span',
     
     'COUNTRY select': '//*[@id="id_country"]',
-    'TAX span': '//*[@id="id_tax"]',
+    'TAX PERCENTAGE span': '//*[@id="id_tax"]',
+    'TAX VALUE span' : '//*[@id="id_tax_total"]/span[2]',
     'ORIGINAL PRICE span': '//*[@id="id_price"]/span[2]',
-
+    'DISCOUNT PERCENTAGE span': '//*[@id="id_discount_percentage"]',
+    'DISCOUNT VALUE span' : '//*[@id="id_discount"]/span[2]',
+    'TOTAL PRICE span' : '//*[@id="id_total"]/span[2]',
+ 
     'PAYPAL SANDBOX switch': '/html/body/div[2]/div/div[2]/form/div/div[2]/div[3]/div/div/div/div[5]/label/h3',
     'TO PAYMENT button': '//*[@id="proceed_to_payment_btn"]',
     #paypal
@@ -101,6 +106,49 @@ def step_impl(context, option, alias):
     select = Select(elem)
     select.select_by_visible_text(option)
     time.sleep(1) #ugly
+
+@step('discount, tax and total price are calculated correctly')
+def step_impl(context):
+    discountPercentage = waitForElementToLoad(context, elements["DISCOUNT PERCENTAGE span"])
+    discountPercentage = Decimal(discountPercentage.text)
+    discountValue = waitForElementToLoad(context, elements["DISCOUNT VALUE span"])
+    discountValue = Decimal(discountValue.text)
+
+    taxPercentage = waitForElementToLoad(context, elements["TAX PERCENTAGE span"])
+    taxPercentage = Decimal(taxPercentage.text)
+    taxValue = waitForElementToLoad(context, elements["TAX VALUE span"])
+    taxValue = Decimal(taxValue.text)
+
+    originalPrice = waitForElementToLoad(context, elements["ORIGINAL PRICE span"])
+    originalPrice = Decimal(originalPrice.text)
+    totalPrice = waitForElementToLoad(context, elements["TOTAL PRICE span"])
+    totalPrice = Decimal(totalPrice.text)
+
+    expectedDiscountValue = originalPrice * discountPercentage / 100
+    discountOK = expectedDiscountValue == discountValue
+
+    expectedTaxValue = (originalPrice - discountValue) * taxPercentage / 100
+    expectedTaxValueRounded = round(expectedTaxValue, 2)
+    taxOK = expectedTaxValueRounded == taxValue  
+
+    expectedTotalPrice = originalPrice - expectedDiscountValue + expectedTaxValue
+    expectedTotalPrice = round(expectedTotalPrice, 2)
+    totalOK = expectedTotalPrice == totalPrice 
+
+    assert discountOK and taxOK and totalOK, """discountOK and taxOK and totalOK
+    {discountOK}: expectedDiscountValue={expectedDiscountValue} == discountValue={discountValue}
+    {taxOK}: expectedTaxValueRounded={expectedTaxValueRounded} == taxValue={taxValue}
+    {totalOK}: expectedTotalPrice={expectedTotalPrice} == totalPrice={totalPrice}""".format(
+        expectedDiscountValue=expectedDiscountValue,
+        discountValue=discountValue,
+        discountOK=discountOK,
+        expectedTaxValueRounded=expectedTaxValueRounded,
+        taxValue=taxValue,
+        taxOK=taxOK,
+        expectedTotalPrice=expectedTotalPrice,
+        totalPrice=totalPrice,
+        totalOK=totalOK
+    )
 
 @step('user is logged in')
 def step_impl(context):

@@ -1,10 +1,9 @@
 import time
+
 from behave import *
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-
-from selenium.webdriver.common.action_chains import ActionChains
 
 elements = {
     # TOP HEADER
@@ -18,6 +17,7 @@ elements = {
 
     # ASSET-GALLERY
     'SEARCH field': '//*[@id="mySearch"]',
+    'SEARCH submit': '/html/body/div[2]/div[3]/div/div[1]/div/form/button',
 
     # LOGIN PAGE /accounts/login/
     'USERNAME input': '//*[@id="id_username"]',
@@ -30,6 +30,11 @@ elements = {
     #choosing plan
     'MONTHLY SUBS button': '/html/body/div[2]/div/div[2]/form/div/div[1]/div/div/div/div[3]/label/span',
     '30DAY GLIMPSE button': '/html/body/div[2]/div/div[2]/form/div/div[1]/div/div/div/div[2]/label/span',
+    
+    'COUNTRY select': '//*[@id="id_country"]',
+    'TAX span': '//*[@id="id_tax"]',
+    'ORIGINAL PRICE span': '//*[@id="id_price"]/span[2]',
+
     'PAYPAL SANDBOX switch': '/html/body/div[2]/div/div[2]/form/div/div[2]/div[3]/div/div/div/div[5]/label/h3',
     'TO PAYMENT button': '//*[@id="proceed_to_payment_btn"]',
     #paypal
@@ -60,13 +65,19 @@ def step_impl(context, alias):
     element = elements[alias]
     waitForElementToLoad(context, element)
 
+@step('element "{alias}" contains text "{text}"')
+def step_impl(context, alias, text):
+    element = elements[alias]
+    elem = waitForElementToLoad(context, element)
+    assert text == elem.text, "condition: text==elem.text; values: text={text}, elem.text={elemText}; FAILED: {text} != {elemText}".format(text=text, elemText=elem.text)
+
 @step('user clicks on element "{alias}"')
 def step_impl(context, alias):
     element = elements[alias]
     elem = waitForElementToLoad(context, element)
     context.driver.execute_script("arguments[0].scrollIntoView();", elem)
     waitForElementToBeClickable(context, element)
-    time.sleep(1)
+    time.sleep(1) #ugly
     elem.click()
 
 @step('user types <{variable}> into element "{alias}"')
@@ -82,6 +93,14 @@ def step_impl(context, text, alias):
     elem = waitForElementToLoad(context, element)
     waitForElementToBeClickable(context, element)
     elem.send_keys(text)
+
+@step('user selects "{option}" in dropdown menu "{alias}"')
+def step_impl(context, option, alias):
+    element = elements[alias]
+    elem = waitForElementToLoad(context, element)
+    select = Select(elem)
+    select.select_by_visible_text(option)
+    time.sleep(1) #ugly
 
 @step('user is logged in')
 def step_impl(context):

@@ -38,7 +38,8 @@ Feature: User buys a full plan subscription
 
   Scenario Outline: User selects different countries
     When user selects "<country>" in dropdown menu "COUNTRY select"
-    Then element "TAX span" contains text "<tax>"
+    Then element "TAX PERCENTAGE span" contains text "<tax>"
+     And discount, tax and total price are calculated correctly
 
   Examples: 
     |country | tax |

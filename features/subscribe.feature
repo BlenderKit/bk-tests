@@ -34,9 +34,56 @@ Feature: User buys a full plan subscription
 
   Scenario: User confirms 30DAY GLIMPSE plan
   # TODO: Check if previously selected plan is highlitghted
-  # Change contry
        When user clicks on element "30DAY GLIMPSE button"
-        And user clicks on element "PAYPAL SANDBOX switch"
+
+  Scenario Outline: User selects different countries
+    When user selects "<country>" in dropdown menu "COUNTRY select"
+    Then element "TAX span" contains text "<tax>"
+
+  Examples: 
+    |country | tax |
+    # Non-EU Countries
+    |Japan | 0 |
+    |India | 0 |
+    |United States of America | 0   |
+    |Brazil | 0 |
+    |Russia | 0 |
+    |China | 0 |
+    |Australia | 0 |
+    |Turkey | 0 |
+    |Ukraine | 0 |
+    |United Kingdom | 0 |
+    # European Union
+    |Belgium | 21 |
+    |Bulgaria | 20 |
+    |Denmark | 25 |
+    |Estonia | 20 |
+    |Finland | 24 |
+    |France | 20 |
+    |Croatia | 25 |
+    |Ireland | 23 |
+    |Italy | 22 |
+    |Cyprus | 19 |
+    |Lithuania | 21 |
+    |Latvia | 21 |
+    |Luxembourg | 17 |
+    |Hungary | 27 |
+    |Malta | 18 |
+    |Germany | 19 |
+    |Netherlands | 21 |
+    |Poland | 23 |
+    |Portugal | 23 |
+    |Austria | 20 |
+    |Romania | 19 |
+    |Greece | 24 |
+    |Slovakia | 20 |
+    |Slovenia | 22 |
+    |Spain | 21 |
+    |Sweden | 25 |
+    |Czechia | 21 |
+
+  Scenario: User selects PayPal Sandbox
+       When user clicks on element "PAYPAL SANDBOX switch"
         And user clicks on element "TO PAYMENT button"
        Then page contains element "PAYPAL MAIL input"
 

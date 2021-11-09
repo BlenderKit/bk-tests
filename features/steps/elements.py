@@ -105,7 +105,6 @@ def step_impl(context, option, alias):
     elem = waitForElementToLoad(context, element)
     select = Select(elem)
     select.select_by_visible_text(option)
-    time.sleep(1) #ugly
 
 @step('discount, tax and total price are calculated correctly')
 def step_impl(context):

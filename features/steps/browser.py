@@ -1,4 +1,4 @@
-import re
+import re, time
 from behave import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -41,7 +41,11 @@ def step_impl(context, location):
 def step_impl(context):
     waitForPageToLoad(context, "/")
 
-@step('wait')
+@step('user waits for "{seconds}" seconds')
+def step_impl(context, seconds):
+  time.sleep(int(seconds))
+
+@step('user waits forever')
 def step_impl(context):
-    while True:
-        pass
+  while True:
+    time.sleep(10)

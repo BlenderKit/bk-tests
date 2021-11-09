@@ -27,24 +27,31 @@ def step_impl(context, text):
         print("text is present")
     assert text in context.driver.page_source
 
-def waitForPageToLoad(context, location):
-    regex = r'http(?:s|)://.*blenderkit.com' + re.escape(location)
+def waitForPageToLoad(context, regex):
     WebDriverWait(context.driver, 30, poll_frequency=5).until(
         EC.url_matches(regex),
         'Timed out waiting for page to load. URL does not match: {expected}, current URL {current}'.format(expected=regex,current=context.driver.current_url))
 
 @step('they are on "{location}"')
 def step_impl(context, location):
-    waitForPageToLoad(context, location)
+  regex = r'http(?:s|)://.*blenderkit.com' + re.escape(location)
+  waitForPageToLoad(context, regex)
     
+@step('they are on path matching "{path}"')
+def step_impl(context, path):
+  regex = r'http(?:s|)://.*blenderkit.com' + path
+  waitForPageToLoad(context, regex)
+
 @step('they are on Homepage')
 def step_impl(context):
-    waitForPageToLoad(context, "/")
+  regex = r'http(?:s|)://.*blenderkit.com/'
+  waitForPageToLoad(context, regex)
 
 @step('user waits for "{seconds}" seconds')
 def step_impl(context, seconds):
   time.sleep(int(seconds))
 
+@step('wait')
 @step('user waits forever')
 def step_impl(context):
   while True:

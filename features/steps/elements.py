@@ -18,7 +18,17 @@ elements = {
 
     # ASSET-GALLERY
     'SEARCH field': '//*[@id="mySearch"]',
-    'SEARCH submit': '/html/body/div[2]/div[3]/div/div[1]/div/form/button',
+    'SEARCH submit': '//*[@id="mySearch"]/following-sibling::button',
+    'FIRST SEARCH RESULT':'/html/body/div[2]/div[3]/div/div[2]/div[2]/div[1]/div/div/a',
+    # asset-popup
+    'ASSET POPUP': '//*[@id="assetModalDetail"]/div/div[1]/div',
+    'ASSET POPUP NAME': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[1]/h1',
+    'ASSET POPUP DESCRIPTION': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[1]/div[1]',
+    'ASSET POPUP LICENSE': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[1]/div[4]',
+    'ASSET POPUP PLAN': '//*[@id="assetModalDetail"]/div/div[1]/div/div[1]/a[1]',
+    'ASSET POPUP AUTHOR NAME': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[2]/div/a[2]',
+    'ASSET POPUP AUTHOR AVATAR': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[2]/div/a[1]/img',
+    'ASSET POPUP GET MODEL button': '//*[@id="assetModalDetail"]/div/div[1]/div/div[1]/a[2]',
 
     # LOGIN PAGE /accounts/login/
     'USERNAME input': '//*[@id="id_username"]',
@@ -50,8 +60,10 @@ elements = {
     'PAYMENT SUBMIT button': '//*[@id="payment-submit-btn"]',
     #welcome to Full Plan
     'INVOICE link': '//*[@id="order_printable_documents"]',
-
 }
+
+def getSearchResultXPathByName(name:str) -> str:
+  return "//a[contains(text(), '{0}') and contains(@class, 'pop')]".format(name)
 
 def waitForElementToLoad(context, element):
     elem = WebDriverWait(context.driver, 30, poll_frequency=5).until(
@@ -69,6 +81,11 @@ def waitForElementToBeClickable(context, element):
 def step_impl(context, alias):
     element = elements[alias]
     waitForElementToLoad(context, element)
+
+@step('page contains clickable element "{alias}"')
+def step_impl(context, alias):
+    element = elements[alias]
+    waitForElementToBeClickable(context, element)
 
 @step('element "{alias}" contains text "{text}"')
 def step_impl(context, alias, text):
@@ -148,6 +165,17 @@ def step_impl(context):
         totalPrice=totalPrice,
         totalOK=totalOK
     )
+
+@step('search result named "{name}" is present')
+def step_impl(context, name):
+  xpath = getSearchResultXPathByName(name)
+  waitForElementToLoad(context, xpath)
+
+@step('user clicks on search result named "{name}"')
+def step_impl(context, name):
+  xpath = getSearchResultXPathByName(name)
+  element = waitForElementToBeClickable(context, xpath)
+  element.click()
 
 @step('user is logged in')
 def step_impl(context):

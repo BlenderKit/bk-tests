@@ -13,6 +13,7 @@ elements = {
     'nav item ADD-ONS': '/html/body/nav/div/div/div/div[1]/div/ul/li[3]/a',
     'nav item AUTHORS': '/html/body/nav/div/div/div/div[1]/div/ul/li[4]/a',
     'nav item SUBSCRIBE': '/html/body/nav/div/div/div/div[1]/ul/li[2]/a',
+    'nav item WORKS': '//*[@id="navbarSupportedContent"]/div/div[1]/ul/li[4]/a',
     'LOG IN button': '/html/body/nav/div/div/div/div[2]/div/ul[1]/li/a',
     'PROFILE dropdown': '//*[@id="profile-dropdown"]',
 
@@ -29,6 +30,9 @@ elements = {
     'ASSET POPUP AUTHOR NAME': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[2]/div/a[2]',
     'ASSET POPUP AUTHOR AVATAR': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[2]/div/a[1]/img',
     'ASSET POPUP GET MODEL button': '//*[@id="assetModalDetail"]/div/div[1]/div/div[1]/a[2]',
+    'ASSET POPUP CLOSE': '//*[@id="assetModalDetail"]/div/div[1]/button',
+
+    # WORKS /gallery
 
     # LOGIN PAGE /accounts/login/
     'USERNAME input': '//*[@id="id_username"]',
@@ -63,6 +67,9 @@ elements = {
 }
 
 def getSearchResultXPathByName(name:str) -> str:
+  return "//a[contains(text(), '{0}') and contains(@class, 'pop')]".format(name)
+
+def getWorkXPathByName(name:str) -> str:
   return "//a[contains(text(), '{0}') and contains(@class, 'pop')]".format(name)
 
 def waitForElementToLoad(context, element):
@@ -174,6 +181,12 @@ def step_impl(context, name):
 @step('user clicks on search result named "{name}"')
 def step_impl(context, name):
   xpath = getSearchResultXPathByName(name)
+  element = waitForElementToBeClickable(context, xpath)
+  element.click()
+
+@step('user clicks on work named "{name}"')
+def step_impl(context, name):
+  xpath = getWorkXPathByName(name)
   element = waitForElementToBeClickable(context, xpath)
   element.click()
 

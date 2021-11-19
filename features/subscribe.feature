@@ -3,6 +3,7 @@ Feature: User buys a full plan subscription
 
   Scenario: User goes to subscription page
       Given user has Chrome running
+        And user closes disclaimers
         And user is logged in
         And page contains element "nav item SUBSCRIBE"
        When user clicks on element "nav item SUBSCRIBE"

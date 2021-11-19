@@ -4,6 +4,7 @@ Works are located at: /gallery
 
   Scenario: User goes to MODELS asset gallery
       Given user has Chrome running
+        And user closes disclaimers
         And user is logged in
         And page contains element "nav item WORKS"
        When user clicks on element "nav item WORKS"

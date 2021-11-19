@@ -4,6 +4,7 @@ This currently works only on production.
 
   Scenario: User goes to MODELS asset gallery
       Given user has Chrome running
+        And user closes disclaimers
         And user is logged in
         And page contains element "nav item MODELS"
        When user clicks on element "nav item MODELS"

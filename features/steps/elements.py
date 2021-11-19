@@ -5,6 +5,7 @@ from behave import *
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 
 elements = {
     # TOP HEADER
@@ -64,6 +65,10 @@ elements = {
     'PAYMENT SUBMIT button': '//*[@id="payment-submit-btn"]',
     #welcome to Full Plan
     'INVOICE link': '//*[@id="order_printable_documents"]',
+
+    #DISCLAIMERS
+    'PRICE DISCLAIMER close': '//*[@id="price-disclaimer"]',
+    'DISCOUNT DISCLAIMER close': '//*[@id="discount_disclaimer"]',
 }
 
 def getSearchResultXPathByName(name:str) -> str:
@@ -202,3 +207,21 @@ def step_impl(context):
          Then they are on Homepage
           And page contains element "PROFILE dropdown"
     """)
+
+@step('user closes disclaimers')
+def step_impl(context):
+  assert None == context.driver.get(context.variables["BK_TARGET"])
+
+  try:
+    element = waitForElementToBeClickable(context, elements["PRICE DISCLAIMER close"])
+    #little bit hacky (cannot find the X button through xPath - it is populated via ::before)
+    ActionChains(context.driver).move_to_element_with_offset(element, element.size["width"]-14, 0).click().perform()
+  except:
+    print("Price disclaimer not closed")
+
+  try:
+    element = waitForElementToBeClickable(context, elements["DISCOUNT DISCLAIMER close"])
+    ActionChains(context.driver).move_to_element_with_offset(element, element.size["width"]-14, 0).click().perform()
+  except:
+    print("Discount disclaimer not closed")
+    

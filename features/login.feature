@@ -3,6 +3,7 @@ Feature: User logs into BlenderKit
 
   Scenario: User opens BlenderKit homepage
       Given user has Chrome running
+        And user closes disclaimers
        When user opens BlenderKit
        Then page includes text "Dream in 3D"
 

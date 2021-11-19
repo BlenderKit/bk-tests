@@ -109,7 +109,7 @@ def step_impl(context, alias, text):
 def step_impl(context, alias):
     element = elements[alias]
     elem = waitForElementToLoad(context, element)
-    context.driver.execute_script("arguments[0].scrollIntoView();", elem)
+    context.driver.execute_script("arguments[0].scrollIntoView(true);", elem)
     waitForElementToBeClickable(context, element)
     time.sleep(1) #ugly
     elem.click()

@@ -54,6 +54,7 @@ def after_step(context, step):
 
 def set_chrome_options() -> None:
   chrome_options = Options()
+  chrome_options.add_argument("--window-size=1920,1080")
 
   if os.environ.get('BK_IS_DOCKER', False):
     chrome_options.add_argument("--headless")

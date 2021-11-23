@@ -109,7 +109,7 @@ def step_impl(context, alias, text):
 def step_impl(context, alias):
     element = elements[alias]
     elem = waitForElementToLoad(context, element)
-    context.driver.execute_script("arguments[0].scrollIntoView(true);", elem)
+    context.driver.execute_script("arguments[0].scrollIntoView();", elem)
     waitForElementToBeClickable(context, element)
     time.sleep(1) #ugly
     elem.click()
@@ -193,6 +193,8 @@ def step_impl(context, name):
 def step_impl(context, name):
   xpath = getWorkXPathByName(name)
   element = waitForElementToBeClickable(context, xpath)
+  context.driver.execute_script("arguments[0].scrollIntoView(false);", element)
+  time.sleep(1) #ugly
   element.click()
 
 @step('user is logged in')

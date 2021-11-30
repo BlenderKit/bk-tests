@@ -46,11 +46,12 @@ def after_feature(context, feature):
   context.driver.close()
 
 def after_step(context, step):
-  context.driver.save_screenshot("{fd}/{line}-{status}-{name}.png".format(
-    fd=context.featureDirectory,
-    line=step.line,
-    status=step.status,
-    name=step.name))
+  if step.status == Status.failed:
+    context.driver.save_screenshot("{fd}/{line}-{status}-{name}.png".format(
+      fd=context.featureDirectory,
+      line=step.line,
+      status=step.status,
+      name=step.name))
 
 def set_chrome_options() -> None:
   chrome_options = Options()

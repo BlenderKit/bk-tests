@@ -20,8 +20,10 @@ Works are located at: /gallery
 
   Examples:
     | work                 | title                | author           |
-    | Greenery             | Greenery             | Brittany Herrera |
-    | Gallery release      | Gallery Release      | Vilém Duha       |
-    | The Round House Urbo | The Round House Urbo | Cindy Clark      |
-    | Glasshouse           | Glasshouse           | Adam Krhanek     |
     | Apartment            | Apartment            | Carolyn Carter   |
+    | Gallery release      | Gallery Release      | Vilém Duha       |
+    | Glasshouse           | Glasshouse           | Adam Krhanek     |
+    | Greenery             | Greenery             | Brittany Herrera |
+    | Kitchen              | Kitchen              | Adam Krhanek     |
+
+

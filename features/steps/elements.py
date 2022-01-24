@@ -24,14 +24,14 @@ elements = {
     'FIRST SEARCH RESULT':'/html/body/div[2]/div[3]/div/div[2]/div[2]/div[1]/div/div/a',
     # asset-popup
     'ASSET POPUP': '//*[@id="assetModalDetail"]/div/div[1]/div',
-    'ASSET POPUP NAME': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[1]/h1',
-    'ASSET POPUP DESCRIPTION': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[1]/div[1]',
-    'ASSET POPUP LICENSE': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[1]/div[4]',
-    'ASSET POPUP PLAN': '//*[@id="assetModalDetail"]/div/div[1]/div/div[1]/a[1]',
-    'ASSET POPUP AUTHOR NAME': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[2]/div/a[2]',
-    'ASSET POPUP AUTHOR AVATAR': '//*[@id="assetModalDetail"]/div/div[1]/div/div[2]/div[1]/div[2]/div/a[1]/img',
-    'ASSET POPUP GET MODEL button': '//*[@id="assetModalDetail"]/div/div[1]/div/div[1]/a[2]',
-    'ASSET POPUP CLOSE': '//*[@id="assetModalDetail"]/div/div[1]/button',
+    'ASSET POPUP NAME': '//*[@id="assetModalDetail"]/div/div/div/div[1]/div[1]/div[1]/h1',
+    'ASSET POPUP DESCRIPTION': '//*[@id="assetModalDetail"]/div/div/div/div[1]/div[1]/div[1]/div[1]',
+    'ASSET POPUP LICENSE': '//*[@id="assetModalDetail"]/div/div/div/div[1]/div[1]/div[1]/div[4]/a/img',
+    'ASSET POPUP PLAN': '//*[@id="assetModalDetail"]/div/div/div/figure/div/a[1]',
+    'ASSET POPUP AUTHOR NAME': '//*[@id="assetModalDetail"]/div/div/div/div[1]/div[1]/div[2]/div/a[2]',
+    'ASSET POPUP AUTHOR AVATAR': '//*[@id="assetModalDetail"]/div/div/div/div[1]/div[1]/div[2]/div/a[1]/img',
+    'ASSET POPUP GET MODEL button': '//*[@id="assetModalDetail"]/div/div/div/figure/div/a[2]',
+    'ASSET POPUP CLOSE': '//*[@id="assetModalDetail"]/div/div/button',
 
     # WORKS /gallery
 

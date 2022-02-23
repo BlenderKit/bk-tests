@@ -9,13 +9,13 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 elements = {
     # TOP HEADER
-    'nav item MODELS': '/html/body/nav/div/div/div/div[1]/div/ul/li[1]/a',
-    'nav item MATERIALS': '/html/body/nav/div/div/div/div[1]/div/ul/li[2]/a', 
-    'nav item ADD-ONS': '/html/body/nav/div/div/div/div[1]/div/ul/li[3]/a',
-    'nav item AUTHORS': '/html/body/nav/div/div/div/div[1]/div/ul/li[4]/a',
-    'nav item SUBSCRIBE': '/html/body/nav/div/div/div/div[1]/ul/li[2]/a',
-    'nav item WORKS': '//*[@id="navbarSupportedContent"]/div/div[1]/ul/li[4]/a',
-    'LOG IN button': '/html/body/nav/div/div/div/div[2]/div/ul[1]/li/a',
+    'nav item MODELS': '//*[@id="navbarSupportedContent"]/div/div[1]/div/ul/li[1]/a',
+    'nav item MATERIALS': '//*[@id="navbarSupportedContent"]/div/div[1]/div/ul/li[2]/a', 
+    'nav item ADD-ONS': '//*[@id="navbarSupportedContent"]/div/div[1]/div/ul/li[3]/a',
+    'nav item AUTHORS': '//*[@id="navbarSupportedContent"]/div/div[1]/div/ul/li[4]/a',
+    'nav item SUBSCRIBE': '//*[@id="navbarSupportedContent"]/div/div[1]/ul/li[1]/a',
+    'nav item WORKS': '//*[@id="navbarSupportedContent"]/div/div[1]/ul/li[3]/a',
+    'LOG IN button': '//*[@id="navbarSupportedContent"]/div/div[2]/div/ul[1]/li/a',
     'PROFILE dropdown': '//*[@id="profile-dropdown"]',
 
     # ASSET-GALLERY

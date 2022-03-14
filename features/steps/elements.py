@@ -36,8 +36,8 @@ elements = {
     # WORKS /gallery
 
     # LOGIN PAGE /accounts/login/
-    'USERNAME input': '//*[@id="id_username"]',
-    'PASSWORD input': '//*[@id="id_password"]',
+    'USERNAME input': '//*[@id="id_auth-username"]|//*[@id="id_username"]',
+    'PASSWORD input': '//*[@id="id_auth-password"]|//*[@id="id_password"]',
     'LOG IN submit': '/html/body/div[2]/div/div[2]/form/input[3]',
 
     # SUBSCRIPTION PAGE

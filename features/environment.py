@@ -14,20 +14,34 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def before_all(context):
   context.variables = {}
-  context.variables["BK_USERNAME"] = os.environ.get("BK_USERNAME")
-  context.variables["BK_PASSWORD"] = os.environ.get("BK_PASSWORD")
-  context.variables["PP_USERNAME"] = os.environ.get("PP_USERNAME")
-  context.variables["PP_PASSWORD"] = os.environ.get("PP_PASSWORD")
-  assert None != context.variables["BK_USERNAME"], "please set BK_USERNAME env variable"
-  assert None != context.variables["BK_PASSWORD"], "please set BK_PASSWORD env variable"
-  
-  context.variables["BK_TARGET"] = os.environ.get("BK_TARGET")
+  context.variables["BK_TARGET"] = os.getenv("BK_TARGET")
+  context.variables["BK_USERNAME"] = os.getenv("BK_USERNAME")
+  context.variables["BK_PASSWORD"] = os.getenv("BK_PASSWORD")
+  context.variables["PP_USERNAME"] = os.getenv("PP_USERNAME")
+  context.variables["PP_PASSWORD"] = os.getenv("PP_PASSWORD")
+
   if context.variables["BK_TARGET"] in [None, "devel", "dev"]:
     context.variables["BK_TARGET"] = "https://devel.blenderkit.com"
+    assert None != context.variables["BK_USERNAME"], "please set BK_USERNAME env variable"
+    assert None != context.variables["BK_PASSWORD"], "please set BK_PASSWORD env variable"
+
   elif context.variables["BK_TARGET"] in ["staging", "stage"]:
     context.variables["BK_TARGET"] = "https://staging.blenderkit.com"
+    context.variables["BK_USERNAME"] = os.getenv("BK_USERNAME_STAGE", context.variables["BK_USERNAME"])
+    context.variables["BK_PASSWORD"] = os.getenv("BK_PASSWORD_STAGE", context.variables["BK_PASSWORD"])
+    context.variables["PP_USERNAME"] = os.getenv("PP_USERNAME_STAGE", context.variables["PP_USERNAME"])
+    context.variables["PP_PASSWORD"] = os.getenv("PP_PASSWORD_STAGE", context.variables["PP_PASSWORD"])
+    assert None != context.variables["BK_USERNAME"], "please set BK_USERNAME_STAGE or BK_USERNAME env variable (first if set overwrites second)"
+    assert None != context.variables["BK_PASSWORD"], "please set BK_PASSWORD_STAGE or BK_PASSWORD env variable (first if set overwrites second)"
+
   elif context.variables["BK_TARGET"] in ["production", "prod"]:
     context.variables["BK_TARGET"] = "https://blenderkit.com"
+    context.variables["BK_USERNAME"] = os.getenv("BK_USERNAME_PROD", context.variables["BK_USERNAME"])
+    context.variables["BK_PASSWORD"] = os.getenv("BK_PASSWORD_PROD", context.variables["BK_PASSWORD"])
+    context.variables["PP_USERNAME"] = os.getenv("PP_USERNAME_PROD", context.variables["PP_USERNAME"])
+    context.variables["PP_PASSWORD"] = os.getenv("PP_PASSWORD_PROD", context.variables["PP_PASSWORD"])
+    assert None != context.variables["BK_USERNAME"], "please set BK_USERNAME_PROD or BK_USERNAME env variable (first if set overwrites second)"
+    assert None != context.variables["BK_PASSWORD"], "please set BK_PASSWORD_PROD or BK_PASSWORD env variable (first if set overwrites second)"
 
   print("INFO: running the tests on server {}".format(context.variables["BK_TARGET"]))
   print("For different target set env variable BK_TARGET to full URL or use shortcuts: devel, stage, production.")

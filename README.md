@@ -30,8 +30,15 @@ Fill in email address and password for testing account in the file `env.sh`.
 ```
 export BK_USERNAME="set username of test account here"
 export BK_PASSWORD="set password of test account here"
+export PP_USERNAME="set paypal sandbox username of test account here"
+export PP_PASSWORD="set paypal sandbox password of test account here"
 source venv/bin/activate
 ```
+
+If you have different usernames/passwords on staging or production server, you can overwrite default variables by setting up variables ending _STAGE or _PROD, for example:
+
+export BK_USERNAME_PROD="production username overwrites BK_USERNAME for production tests"
+export BK_USERNAME_STAGE="stage username overwrites BK_USERNAME for stage tests"
 
 ### Running the tests locally
 ```

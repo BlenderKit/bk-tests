@@ -1,6 +1,18 @@
 version: 2.1
 jobs:
-  selenium-test:
+  devel-tests:
+    docker:
+      - image: agajdosi/bk-tests:latest
+    steps:
+      - checkout
+      - run:
+          name: Run the tests
+          command: BK_IS_DOCKER=True behave
+      - store_artifacts:
+          path: screenshots
+          destination: screenshots
+
+  production-tests:
     docker:
       - image: agajdosi/bk-tests:latest
     steps:
@@ -16,7 +28,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - selenium-test
+      - devel-tests
   nightly:
     triggers:
       - schedule:
@@ -26,4 +38,4 @@ workflows:
               only:
                 - main
     jobs:
-      - selenium-test
+      - devel-tests

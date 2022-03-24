@@ -68,11 +68,19 @@ Feature: User buys a full plan subscription
     |Sweden | 25 |
     |Czechia | 21 |
 
-  Scenario: User selects PayPal Sandbox
+  @dev
+  Scenario: User selects PayPal Sandbox method
        When user clicks on element "PAYPAL SANDBOX switch"
         And user clicks on element "TO PAYMENT button"
        Then page contains element "PAYPAL MAIL input"
 
+  @prod
+  Scenario: Users selects PayPal method
+       When user clicks on element "PAYPAL switch"
+        And user clicks on element "TO PAYMENT button"
+       Then they are on URL "https://www\.paypal\.com/.*"
+
+  @dev
   Scenario: User pays and gets her invoice
        When user types <PP_USERNAME> into element "PAYPAL MAIL input"
         And user clicks on element "PAYPAL NEXT button"

@@ -47,6 +47,10 @@ def step_impl(context):
   regex = r'http(?:s|)://.*blenderkit.com/'
   waitForPageToLoad(context, regex)
 
+@step('they are on URL "{url}"')
+def step_impl(context, url):
+  waitForPageToLoad(context, url)
+
 @step('user waits for "{seconds}" seconds')
 def step_impl(context, seconds):
   time.sleep(int(seconds))

@@ -20,10 +20,6 @@ Works are located at: /gallery
 
   Examples:
     | work                 | title                | author           |
-    | Apartment            | Apartment            | Carolyn Carter   |
     | Gallery release      | Gallery Release      | Vilém Duha       |
     | Glasshouse           | Glasshouse           | Adam Krhanek     |
-    | Greenery             | Greenery             | Brittany Herrera |
     | Kitchen              | Kitchen              | Adam Krhanek     |
-
-

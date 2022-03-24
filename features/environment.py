@@ -21,11 +21,13 @@ def before_all(context):
   context.variables["PP_PASSWORD"] = os.getenv("PP_PASSWORD")
 
   if context.variables["BK_TARGET"] in [None, "devel", "dev"]:
+    context.variables["BK_TEST_TYPE"] = "dev"
     context.variables["BK_TARGET"] = "https://devel.blenderkit.com"
     assert None != context.variables["BK_USERNAME"], "please set BK_USERNAME env variable"
     assert None != context.variables["BK_PASSWORD"], "please set BK_PASSWORD env variable"
 
   elif context.variables["BK_TARGET"] in ["staging", "stage"]:
+    context.variables["BK_TEST_TYPE"] = "stage"
     context.variables["BK_TARGET"] = "https://staging.blenderkit.com"
     context.variables["BK_USERNAME"] = os.getenv("BK_USERNAME_STAGE", context.variables["BK_USERNAME"])
     context.variables["BK_PASSWORD"] = os.getenv("BK_PASSWORD_STAGE", context.variables["BK_PASSWORD"])
@@ -35,6 +37,7 @@ def before_all(context):
     assert None != context.variables["BK_PASSWORD"], "please set BK_PASSWORD_STAGE or BK_PASSWORD env variable (first if set overwrites second)"
 
   elif context.variables["BK_TARGET"] in ["production", "prod"]:
+    context.variables["BK_TEST_TYPE"] = "prod"
     context.variables["BK_TARGET"] = "https://blenderkit.com"
     context.variables["BK_USERNAME"] = os.getenv("BK_USERNAME_PROD", context.variables["BK_USERNAME"])
     context.variables["BK_PASSWORD"] = os.getenv("BK_PASSWORD_PROD", context.variables["BK_PASSWORD"])
@@ -58,6 +61,13 @@ def before_feature(context, feature):
 
 def after_feature(context, feature):
   context.driver.close()
+
+def before_scenario(context, scenario):
+  test_type = context.variables["BK_TEST_TYPE"]
+  if test_type == "prod" and "dev" in context.tags:
+    scenario.skip(f"Test type '{test_type}' and scenario tagged as 'dev'")
+  if test_type == "dev" and "prod" in context.tags:
+    scenario.skip(f"Test type '{test_type}' and scenario tagged as 'prod'")
 
 def after_step(context, step):
   if step.status == Status.failed:

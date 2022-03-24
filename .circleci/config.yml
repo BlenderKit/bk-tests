@@ -19,7 +19,7 @@ jobs:
       - checkout
       - run:
           name: Run the tests
-          command: BK_IS_DOCKER=True behave
+          command: BK_IS_DOCKER=True BK_TARGET=prod behave
       - store_artifacts:
           path: screenshots
           destination: screenshots
@@ -29,6 +29,7 @@ workflows:
   build_and_test:
     jobs:
       - devel-tests
+      - production-tests
   nightly:
     triggers:
       - schedule:
@@ -39,3 +40,4 @@ workflows:
                 - main
     jobs:
       - devel-tests
+      - production-tests

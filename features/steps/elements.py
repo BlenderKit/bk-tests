@@ -20,7 +20,11 @@ elements = {
 
   # ASSET-GALLERY
   'SEARCH field': '//*[@id="mySearch"]',
-  'SEARCH submit': '//*[@id="mySearch"]/following-sibling::button',
+  
+  'FIND button': {
+    'dev': '//*[@id="search-button"]',
+    'prod': '//*[@id="mySearch"]/following-sibling::button',
+  },
   'FIRST SEARCH RESULT':'/html/body/div[2]/div[3]/div/div[2]/div[2]/div[1]/div/div/a',
   # asset-popup
   'ASSET POPUP': '//*[@id="assetModalDetail"]/div/div[1]/div',
@@ -38,7 +42,10 @@ elements = {
   # LOGIN PAGE /accounts/login/
   'USERNAME input': '//*[@id="id_auth-username"]|//*[@id="id_username"]',
   'PASSWORD input': '//*[@id="id_auth-password"]|//*[@id="id_password"]',
-  'LOG IN submit': '/html/body/div[2]/div/div[2]/form/input[3]',
+  'LOG IN submit': {
+    'dev': '/html/body/div[3]/div/div[2]/form/input[3]',
+    'prod': '/html/body/div[2]/div/div[2]/form/input[3]',
+  },
 
   # SUBSCRIPTION PAGE
   'YEARLY switch': {
@@ -76,6 +83,8 @@ elements = {
   #DISCLAIMERS
   'PRICE DISCLAIMER close': '//*[@id="price-disclaimer"]',
   'DISCOUNT DISCLAIMER close': '//*[@id="discount_disclaimer"]',
+  'CZECH DISCLAIMER close': '//*[@id="disclaimer-czech1"]',
+  'TEST DISCLAIMER close': '//*[@id="disclaimer-test"]',
 }
 
 def get_element(context, alias: str) -> str:
@@ -132,7 +141,7 @@ def step_impl(context, alias, text):
 def step_impl(context, alias):
   element = get_element(context, alias)
   elem = waitForElementToLoad(context, element)
-  context.driver.execute_script("arguments[0].scrollIntoView();", elem)
+  context.driver.execute_script("arguments[0].scrollIntoView(false);", elem)
   waitForElementToBeClickable(context, element)
   time.sleep(1) #ugly
   elem.click()
@@ -241,16 +250,17 @@ def step_impl(context):
 @step('user closes disclaimers')
 def step_impl(context):
   assert None == context.driver.get(context.variables["BK_TARGET"])
+  disclaimers = [
+    'PRICE DISCLAIMER close',
+    'DISCOUNT DISCLAIMER close',
+    'CZECH DISCLAIMER close',
+    'TEST DISCLAIMER close',
+  ]
 
-  try:
-    element = waitForElementToBeClickable(context, get_element(context, "PRICE DISCLAIMER close"))
-    #little bit hacky (cannot find the X button through xPath - it is populated via ::before)
-    ActionChains(context.driver).move_to_element_with_offset(element, element.size["width"]-14, 0).click().perform()
-  except:
-    print("Price disclaimer not closed")
-
-  try:
-    element = waitForElementToBeClickable(context, get_element(context, "DISCOUNT DISCLAIMER close"))
-    ActionChains(context.driver).move_to_element_with_offset(element, element.size["width"]-14, 0).click().perform()
-  except:
-    print("Discount disclaimer not closed")
+  for disclaimer in disclaimers:
+    try:
+      element = waitForElementToBeClickable(context, get_element(context, disclaimer))
+      #little bit hacky (cannot find the X button through xPath - it is populated via ::before)
+      ActionChains(context.driver).move_to_element_with_offset(element, element.size["width"]-14, 0).click().perform()
+    except:
+      print(f"{disclaimer} not closed")

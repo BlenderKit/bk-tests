@@ -1,4 +1,4 @@
-@works @wip
+@works @wip @prod
 Feature: User looks on works section
 Works are located at: /gallery
 

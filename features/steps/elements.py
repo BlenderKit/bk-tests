@@ -49,16 +49,16 @@ elements = {
 
   # SUBSCRIPTION PAGE
   'YEARLY switch': {
-    'dev': '/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[3]/div[4]',
+    'dev': '//*[@id="id_plan_1_6"]',
     'prod': '/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[2]/div[3]',
   },             
   'GET PLAN button': {
-    'dev': '/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[5]/h4/a',
+    'dev': '//*[@id="id_pricing_href_1"]',
     'prod': '/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[4]/h4/a'
   },
   #choosing plan
   'MONTHLY SUBS button': '/html/body/div[2]/div/div[2]/form/div/div[1]/div/div/div/div[3]/label/span',
-  '30DAY GLIMPSE button': '/html/body/div[2]/div/div[2]/form/div/div[1]/div/div/div/div[2]/label/span',
+  '30DAY GLIMPSE button': '//*[@id="id_plan_choice"]/div[2]/label/span',
     
   'COUNTRY select': '//*[@id="id_country"]',
   'TAX PERCENTAGE span': '//*[@id="id_tax"]',
@@ -67,8 +67,8 @@ elements = {
   'DISCOUNT PERCENTAGE span': '//*[@id="id_discount_percentage"]',
   'DISCOUNT VALUE span' : '//*[@id="id_discount"]/span[2]',
   'TOTAL PRICE span' : '//*[@id="id_total"]/span[2]',
- 
-  'PAYPAL SANDBOX switch': '/html/body/div[2]/div/div[2]/form/div/div[2]/div[3]/div/div/div/div[5]/label/h3',
+
+  'PAYPAL SANDBOX switch': '//*[@id="id_payment_choice"]/div[5]/label/h3',
   'PAYPAL switch': '//*[@id="id_payment_choice"]/div[2]/label/h3',
   'TO PAYMENT button': '//*[@id="proceed_to_payment_btn"]',
   #paypal
@@ -141,10 +141,16 @@ def step_impl(context, alias, text):
 def step_impl(context, alias):
   element = get_element(context, alias)
   elem = waitForElementToLoad(context, element)
-  context.driver.execute_script("arguments[0].scrollIntoView(false);", elem)
-  waitForElementToBeClickable(context, element)
-  time.sleep(1) #ugly
-  elem.click()
+  try:
+    context.driver.execute_script("arguments[0].scrollIntoView(false);", elem)
+    waitForElementToBeClickable(context, element)
+    time.sleep(1) #ugly
+    elem.click()
+  except:
+    context.driver.execute_script("arguments[0].scrollIntoView(true);", elem)
+    waitForElementToBeClickable(context, element)
+    time.sleep(1) #ugly
+    elem.click()
 
 @step('user types <{variable}> into element "{alias}"')
 def step_impl(context, variable, alias):
